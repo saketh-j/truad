@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import Home from './components/Home';
+import Cart from './components/Cart';
 
-function App() {
+
+const App = () => {
+  const [cart, setCart] = useState([]);
+  const [albums, setAlbums] = useState([]);
+
+  const removeFromCart = (itemToRemove) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== itemToRemove.id));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={<Login />}
+        />
+        <Route
+          path="/home"
+          element={<Home cart={cart} setCart={setCart} setAlbums={setAlbums} />}
+        />
+        <Route
+          path="/cart"
+          element={
+            <div>
+              <Cart cart={cart} albums={albums} removeFromCart={removeFromCart} />
+            
+            </div>
+          }
+        />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
